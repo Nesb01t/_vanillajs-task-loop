@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .outer {
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+        }
+
+        .inner {
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div class="outer">
+    <div class="inner"></div>
+</div>
+<script>
+    /**
+     * 试着点击 inner, 最终得到的结果如下
+     */
+        // clicked
+        // promise
+        // mutated -> it means that the attribute of outer has been changed
+
+        // clicked
+        // promise
+        // mutated -> one more time
+
+        // 2 * timeout -> tasks 出栈
+
+    const outer = document.querySelector('.outer');
+    const inner = document.querySelector('.inner');
+
+    // 观察 outer 元素的 attributes
+    new MutationObserver(function () {
+        console.log('mutated')
+    }).observe(outer, {
+        attributes: true
+    })
+
+    const onClick = () => {
+        console.log('clicked')
+
+        setTimeout(() => {
+            console.log('timeout')
+        }, 0)
+
+        Promise.resolve().then(() => {
+            console.log('promise')
+        })
+
+        outer.setAttribute('data-random', Math.random().toString())
+    }
+
+    inner.addEventListener('click', onClick)
+    outer.addEventListener('click', onClick)
+</script>
+</body>
+</html>
