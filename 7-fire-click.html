@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .outer {
+            width: 100px;
+            height: 100px;
+            background-color: yellowgreen;
+        }
+
+        .inner {
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div class="outer">
+    <div class="inner"></div>
+</div>
+<script>
+    /**
+     * 这次我们执行 2次 onClick()
+     * 而不是在 html 脚本上进行交互
+     */
+        // 2 * clicked
+        // promise
+        // mutated
+        // promise
+        // 2 * timeout
+    const outer = document.querySelector('.outer');
+    const inner = document.querySelector('.inner');
+
+    // 观察 outer 元素的 attributes
+    new MutationObserver(function () {
+        console.log('mutated')
+    }).observe(outer, {
+        attributes: true
+    })
+
+    const onClick = () => {
+        console.log('clicked')
+
+        setTimeout(() => {
+            console.log('timeout')
+        }, 0)
+
+        Promise.resolve().then(() => {
+            console.log('promise')
+        })
+
+        outer.setAttribute('data-random', Math.random().toString())
+    }
+
+    onClick()
+    onClick()
+</script>
+</body>
+</html>
